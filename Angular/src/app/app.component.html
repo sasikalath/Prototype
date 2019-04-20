@@ -1,0 +1,67 @@
+<div class="header">
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+  </mat-form-field>
+</div>
+
+<div class="example-container">
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <h4> Name</h4>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orgName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <h4>Org Name</h4>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.orgName}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="userName">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>
+        <h4>User Name</h4>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.userName}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="roles">
+      <mat-header-cell *matHeaderCellDef>
+        <h4>roles</h4>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-select placeholder="roles">
+          <mat-option [value]="opt-1"> Admin </mat-option>
+          <mat-option [value]="opt-2"> User </mat-option>
+          <mat-option [value]="opt-2"> Provider </mat-option>
+        </mat-select>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="associatedwith">
+      <mat-header-cell *matHeaderCellDef>
+        <h4>Associated with?</h4>
+      </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <mat-select placeholder="associatedwith" name="associatedwith" class="filter-select"
+          [(ngModel)]="selectedAssociate" [compareWith]="equals" multiple #associateSelect>
+          <mat-option disabled="disabled" class="filter-option">
+            <button mat-raised-button class="mat-primary fill text-sm"
+              (click)="selectAll(associateSelect, associate, selectedAssociate)">Select All
+            </button>
+            <button mat-raised-button class="mat-accent fill text-sm" (click)="deselectAll(associateSelect)">
+              Deselect All
+            </button>
+          </mat-option>
+          <mat-option *ngFor="let associ of associate" [value]="associ">
+            {{associ.viewValue}}
+          </mat-option>
+        </mat-select>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
